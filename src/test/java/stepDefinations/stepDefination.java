@@ -22,6 +22,8 @@ public class stepDefination extends Utils {
 	RequestSpecification res;
 	Response response;
 	TestDataBuild td = new TestDataBuild();
+	String place_id;
+	JsonPath jp;
 	@Given("Add Place payload with {string} {string} {string}")
 	public void add_place_payload_with(String name, String language, String address) throws IOException {
 
@@ -43,15 +45,24 @@ public class stepDefination extends Utils {
 		else if (methodtype.equalsIgnoreCase("GET"))
 			response =res.when().get(resourceAPI.getResource());
 	}
+	
 	@Then("the API call is success with status code is {string}")
 	public void the_api_call_is_success_with_status_code_is(String string) {
 		assertEquals(response.getStatusCode(),200);
 	}
+	
 	@Then("{string} in response body is {string}")
 	public void in_response_body_is(String keyValue, String expectedValue) {
-		String resp= response.asString();
-		JsonPath jp= new JsonPath(resp);
-		assertEquals(jp.get(keyValue).toString(),expectedValue);
+		assertEquals(getJsonPath(response, keyValue).toString(),expectedValue);
+	}
+	
+	@Then("verify place_Id created maps to {string} using {string}")
+	public void verify_place_id_created_maps_to_using(String expectedName, String resource) throws IOException {
+		String place_id=getJsonPath(response, "place_id");
+		res=given().spec(requestSpecification()).queryParam("place_id", place_id);
+		user_calls_with_post_http_request(resource, "GET");
+		String actualName= getJsonPath(response, "name");
+		assertEquals(actualName,expectedName);
 	}
 
 
