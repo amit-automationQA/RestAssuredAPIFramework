@@ -11,3 +11,11 @@ Examples:
 |name    |language|address           |
 |AAAhouse|English |World trade center|
 |BBhouse |Spanish |Cross center      |
+
+
+Scenario: To verify if Delete place functionality is working
+
+Given DeletePlace Payload
+When user calls "deletePlaceAPI" with "POST" http request
+Then the API call is success with status code is "200"
+And "status" in response body is "OK"
