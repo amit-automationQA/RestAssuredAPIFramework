@@ -9,6 +9,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import resources.APIResources;
 import resources.TestDataBuild;
 import resources.Utils;
 
@@ -24,15 +25,23 @@ public class stepDefination extends Utils {
 	@Given("Add Place payload with {string} {string} {string}")
 	public void add_place_payload_with(String name, String language, String address) throws IOException {
 
-		resspec =new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+		
 		res=given().spec(requestSpecification())
 				.body(td.addPlacePayload(name,language,address));
 
 	}
-	@When("user calls {string} with POST http request")
-	public void user_calls_with_post_http_request(String string1) {
-		response =res.when().post("/maps/api/place/add/json").
-				then().spec(resspec).extract().response();
+	@When("user calls {string} with {string} http request")
+	public void user_calls_with_post_http_request(String resource ,String methodtype) {
+		
+		//constructor will be passed with the value which you have passed
+		APIResources resourceAPI=APIResources.valueOf(resource);
+		System.out.println(resourceAPI.getResource());
+		resspec =new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+		
+		if(methodtype.equalsIgnoreCase("POST"))
+		response =res.when().post(resourceAPI.getResource());
+		else if (methodtype.equalsIgnoreCase("GET"))
+			response =res.when().get(resourceAPI.getResource());
 	}
 	@Then("the API call is success with status code is {string}")
 	public void the_api_call_is_success_with_status_code_is(String string) {
