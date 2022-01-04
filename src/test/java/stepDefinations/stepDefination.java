@@ -21,12 +21,12 @@ public class stepDefination extends Utils {
 	RequestSpecification res;
 	Response response;
 	TestDataBuild td = new TestDataBuild();
-	@Given("Add Place payload")
-	public void add_place_payload() throws IOException {
+	@Given("Add Place payload with {string} {string} {string}")
+	public void add_place_payload_with(String name, String language, String address) throws IOException {
 
 		resspec =new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 		res=given().spec(requestSpecification())
-				.body(td.addPlacePayload());
+				.body(td.addPlacePayload(name,language,address));
 
 	}
 	@When("user calls {string} with POST http request")
