@@ -1,4 +1,5 @@
 Feature: Validating Place API's
+@AddPlace
 Scenario Outline: Verify if Place is being successfully added using AddPlaceAPI
 	Given Add Place payload with "<name>" "<language>" "<address>"
 	When user calls "AddPlaceAPI" with "POST" http request
@@ -12,7 +13,7 @@ Examples:
 |AAAhouse|English |World trade center|
 |BBhouse |Spanish |Cross center      |
 
-
+@DeletePlace
 Scenario: To verify if Delete place functionality is working
 
 Given DeletePlace Payload
