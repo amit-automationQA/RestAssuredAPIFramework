@@ -15,14 +15,14 @@ import resources.Utils;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 public class stepDefination extends Utils {
 	ResponseSpecification resspec;
 	RequestSpecification res;
 	Response response;
 	TestDataBuild td = new TestDataBuild();
 	@Given("Add Place payload")
-	public void add_place_payload() throws FileNotFoundException {
+	public void add_place_payload() throws IOException {
 
 		resspec =new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 		res=given().spec(requestSpecification())
